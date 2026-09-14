@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CD</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #ffffff;
+            background:
+                linear-gradient(rgba(6, 32, 47, 0.84), rgba(10, 55, 42, 0.90)),
+                radial-gradient(circle at top, #2e8b57, #071d20 70%);
+        }
+
+        .countdown-container {
+            width: 100%;
+            max-width: 1050px;
+            padding: 38px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 28px;
+            background: rgba(8, 35, 44, 0.86);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+            backdrop-filter: blur(12px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .header-icon {
+            font-size: 56px;
+            line-height: 1;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: #cce8dc;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            margin-bottom: 28px;
+        }
+
+        .card {
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 22px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .card-label {
+            margin-bottom: 12px;
+            color: #b9ddcf;
+            font-size: 0.92rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .primary-number {
+            margin: 0;
+            color: #ffffff;
+            font-size: clamp(3.2rem, 8vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .number-unit {
+            margin-top: 10px;
+            color: #cce8dc;
+            font-size: 1.05rem;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .time-box {
+            padding: 15px 8px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.22);
+        }
+
+        .time-value {
+            display: block;
+            font-size: clamp(1.5rem, 4vw, 2.4rem);
+            font-weight: 800;
+        }
+
+        .time-label {
+            display: block;
+            margin-top: 5px;
+            color: #b9ddcf;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .detail {
+            padding: 18px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 7px;
+            color: #9fcbb9;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .holiday-section {
+            padding: 22px;
+            border-radius: 18px;
+            background: rgba(0, 0, 0, 0.19);
+        }
+
+        .holiday-section h2 {
+            margin: 0 0 14px;
+            font-size: 1.1rem;
+        }
+
+        .holiday-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .holiday {
+            padding: 8px 11px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            color: #d9eee6;
+            background: rgba(255, 255, 255, 0.07);
+            font-size: 0.82rem;
+        }
+
+        .calculation-note {
+            margin: 20px 0 0;
+            color: #aed2c4;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .expired {
+            color: #ffd166;
+        }
+
+        @media (max-width: 760px) {
+            .countdown-container {
+                padding: 24px 18px;
+            }
+
+            .cards,
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .time-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="countdown-container">
+        <header class="header">
+            
+            <h1>Countdown to Retirement</h1>
+            <p class="subtitle">
+                Countdown to Friday, November 20, 2026, at 3:00 PM Eastern Time
+            </p>
+        </header>
+
+        <section class="cards">
+            <article class="card">
+                <div class="card-label">Working Days Remaining</div>
+                <p class="primary-number" id="workingDays">0</p>
+                <div class="number-unit">weekdays</div>
+            </article>
+
+            <article class="card">
+                <div class="card-label">Calendar Days Remaining</div>
+                <p class="primary-number" id="calendarDays">0</p>
+                <div class="number-unit">complete days</div>
+
+                <div class="time-grid">
+                    <div class="time-box">
+                        <span class="time-value" id="days">0</span>
+                        <span class="time-label">Days</span>
+                    </div>
+
+                    <div class="time-box">
+                        <span class="time-value" id="hours">0</span>
+                        <span class="time-label">Hours</span>
+                    </div>
+
+                    <div class="time-box">
+                        <span class="time-value" id="minutes">0</span>
+                        <span class="time-label">Minutes</span>
+                    </div>
+
+                    <div class="time-box">
+                        <span class="time-value" id="seconds">0</span>
+                        <span class="time-label">Seconds</span>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section class="details">
+            <div class="detail">
+                <span class="detail-label">Current Eastern Time</span>
+                <span class="detail-value" id="currentDateTime">Calculating...</span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-label">Target Date and Time</span>
+                <span class="detail-value">
+                    November 20, 2026<br>
+                    3:00 PM Eastern Time
+                </span>
+            </div>
+
+            <div class="detail">
+                <span class="detail-label">Calculation Method</span>
+                <span class="detail-value">
+                    Today excluded<br>
+                    Target date included if it is a working day
+                </span>
+            </div>
+        </section>
+
+        <section class="holiday-section">
+            <h2>Excluded Holidays</h2>
+
+            <div class="holiday-list">
+                <span class="holiday">New Year's Day</span>
+                <span class="holiday">Martin Luther King Jr. Day</span>
+                <span class="holiday">Memorial Day</span>
+                <span class="holiday">Independence Day</span>
+                <span class="holiday">Labor Day</span>
+                <span class="holiday">Thanksgiving Day</span>
+                <span class="holiday">Christmas Day</span>
+            </div>
+        </section>
+
+        <p class="calculation-note" id="statusMessage">
+            Working days include Monday through Friday. Weekends, today, and the
+            listed holidays are excluded.
+        </p>
+    </main>
+
+    <script>
+        /*
+         * Target: November 20, 2026 at 3:00 PM
+         * Time zone: America/New_York
+         *
+         * The explicit UTC offset for this target is -05:00 because
+         * November 20, 2026 occurs after daylight saving time ends.
+         */
+        const TARGET_DATE = new Date("2026-11-20T15:00:00-05:00");
+        const EASTERN_TIME_ZONE = "America/New_York";
+
+        /*
+         * Returns the date components for a Date object in Eastern Time.
+         */
+        function getEasternDateParts(date) {
+            const formatter = new Intl.DateTimeFormat("en-US", {
+                timeZone: EASTERN_TIME_ZONE,
+                year: "numeric",
+                month: "numeric",
+                day: "numeric"
+            });
+
+            const parts = formatter.formatToParts(date);
+            const result = {};
+
+            for (const part of parts) {
+                if (part.type !== "literal") {
+                    result[part.type] = Number(part.value);
+                }
+            }
+
+            return {
+                year: result.year,
+                month: result.month,
+                day: result.day
+            };
+        }
+
+        /*
+         * Creates a UTC date used only for date-based calculations.
+         * This avoids daylight saving time affecting the day count.
+         */
+        function createDateOnly(year, month, day) {
+            return new Date(Date.UTC(year, month - 1, day));
+        }
+
+        function formatDateKey(date) {
+            const year = date.getUTCFullYear();
+            const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+            const day = String(date.getUTCDate()).padStart(2, "0");
+
+            return `${year}-${month}-${day}`;
+        }
+
+        /*
+         * Finds the nth occurrence of a weekday in a month.
+         *
+         * weekday:
+         * 0 = Sunday
+         * 1 = Monday
+         * ...
+         * 6 = Saturday
+         */
+        function getNthWeekdayOfMonth(year, month, weekday, occurrence) {
+            const firstDay = createDateOnly(year, month, 1);
+            const firstWeekday = firstDay.getUTCDay();
+
+            const offset = (weekday - firstWeekday + 7) % 7;
+            const day = 1 + offset + ((occurrence - 1) * 7);
+
+            return createDateOnly(year, month, day);
+        }
+
+        /*
+         * Finds the last occurrence of a weekday in a month.
+         */
+        function getLastWeekdayOfMonth(year, month, weekday) {
+            const lastDay = new Date(Date.UTC(year, month, 0));
+            const lastWeekday = lastDay.getUTCDay();
+
+            const offset = (lastWeekday - weekday + 7) % 7;
+            lastDay.setUTCDate(lastDay.getUTCDate() - offset);
+
+            return lastDay;
+        }
+
+        /*
+         * Creates the holiday list for a given year.
+         *
+         * The holidays are excluded on their actual calendar dates.
+         * Observed weekdays are not automatically substituted when a
+         * holiday falls on a weekend.
+         */
+        function getHolidayDates(year) {
+            return new Set([
+                // New Year's Day
+                formatDateKey(createDateOnly(year, 1, 1)),
+
+                // Martin Luther King Jr. Day: third Monday in January
+                formatDateKey(getNthWeekdayOfMonth(year, 1, 1, 3)),
+
+                // Memorial Day: last Monday in May
+                formatDateKey(getLastWeekdayOfMonth(year, 5, 1)),
+
+                // Independence Day
+                formatDateKey(createDateOnly(year, 7, 4)),
+
+                // Labor Day: first Monday in September
+                formatDateKey(getNthWeekdayOfMonth(year, 9, 1, 1)),
+
+                // Thanksgiving Day: fourth Thursday in November
+                formatDateKey(getNthWeekdayOfMonth(year, 11, 4, 4)),
+
+                // Christmas Day
+                formatDateKey(createDateOnly(year, 12, 25))
+            ]);
+        }
+
+        const holidayCache = new Map();
+
+        function isHoliday(date) {
+            const year = date.getUTCFullYear();
+
+            if (!holidayCache.has(year)) {
+                holidayCache.set(year, getHolidayDates(year));
+            }
+
+            return holidayCache.get(year).has(formatDateKey(date));
+        }
+
+        function isWeekend(date) {
+            const dayOfWeek = date.getUTCDay();
+            return dayOfWeek === 0 || dayOfWeek === 6;
+        }
+
+        /*
+         * Counts weekdays after today through the target date.
+         *
+         * Today is excluded.
+         * The target date is included if it is Monday through Friday
+         * and is not one of the specified holidays.
+         */
+        function calculateWorkingDays(now) {
+            const currentParts = getEasternDateParts(now);
+            const targetParts = getEasternDateParts(TARGET_DATE);
+
+            const currentDate = createDateOnly(
+                currentParts.year,
+                currentParts.month,
+                currentParts.day
+            );
+
+            const targetDate = createDateOnly(
+                targetParts.year,
+                targetParts.month,
+                targetParts.day
+            );
+
+            if (currentDate >= targetDate) {
+                return 0;
+            }
+
+            let workingDays = 0;
+            const reviewDate = new Date(currentDate);
+
+            // Begin with tomorrow, which excludes today.
+            reviewDate.setUTCDate(reviewDate.getUTCDate() + 1);
+
+            while (reviewDate <= targetDate) {
+                if (!isWeekend(reviewDate) && !isHoliday(reviewDate)) {
+                    workingDays++;
+                }
+
+                reviewDate.setUTCDate(reviewDate.getUTCDate() + 1);
+            }
+
+            return workingDays;
+        }
+
+        function formatEasternDateTime(date) {
+            return new Intl.DateTimeFormat("en-US", {
+                timeZone: EASTERN_TIME_ZONE,
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+                second: "2-digit",
+                timeZoneName: "short"
+            }).format(date);
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const remainingMilliseconds = TARGET_DATE.getTime() - now.getTime();
+
+            document.getElementById("currentDateTime").textContent =
+                formatEasternDateTime(now);
+
+            if (remainingMilliseconds <= 0) {
+                document.getElementById("workingDays").textContent = "0";
+                document.getElementById("calendarDays").textContent = "0";
+                document.getElementById("days").textContent = "0";
+                document.getElementById("hours").textContent = "0";
+                document.getElementById("minutes").textContent = "0";
+                document.getElementById("seconds").textContent = "0";
+
+                const statusMessage =
+                    document.getElementById("statusMessage");
+
+                statusMessage.textContent =
+                    "The target date and time has been reached.";
+
+                statusMessage.classList.add("expired");
+                return;
+            }
+
+            const millisecondsPerSecond = 1000;
+            const millisecondsPerMinute = 60 * millisecondsPerSecond;
+            const millisecondsPerHour = 60 * millisecondsPerMinute;
+            const millisecondsPerDay = 24 * millisecondsPerHour;
+
+            const calendarDays = Math.floor(
+                remainingMilliseconds / millisecondsPerDay
+            );
+
+            const hours = Math.floor(
+                (remainingMilliseconds % millisecondsPerDay) /
+                millisecondsPerHour
+            );
+
+            const minutes = Math.floor(
+                (remainingMilliseconds % millisecondsPerHour) /
+                millisecondsPerMinute
+            );
+
+            const seconds = Math.floor(
+                (remainingMilliseconds % millisecondsPerMinute) /
+                millisecondsPerSecond
+            );
+
+            document.getElementById("workingDays").textContent =
+                calculateWorkingDays(now).toLocaleString();
+
+            document.getElementById("calendarDays").textContent =
+                calendarDays.toLocaleString();
+
+            document.getElementById("days").textContent =
+                calendarDays.toLocaleString();
+
+            document.getElementById("hours").textContent =
+                String(hours).padStart(2, "0");
+
+            document.getElementById("minutes").textContent =
+                String(minutes).padStart(2, "0");
+
+            document.getElementById("seconds").textContent =
+                String(seconds).padStart(2, "0");
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
